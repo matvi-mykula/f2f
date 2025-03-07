@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-export const Bubble = ({ primaryContent, bubble1, bubble2, bubble3 }) => {
+export const Bubble = ({ primaryContent, bubbles = [] }) => {
   const [showSubBubbles, setShowSubBubbles] = useState(false);
   const [fade, setFade] = useState(false);
+  const subBubblesRef = useRef(null);
 
   const bubbleStyle = {
     display: "inline-block",
@@ -17,39 +18,58 @@ export const Bubble = ({ primaryContent, bubble1, bubble2, bubble3 }) => {
   };
 
   const handlePrimaryClick = () => {
-    // Fade out the primary bubble
+    // Fade out the primary bubble.
     setFade(true);
     setTimeout(() => {
-      // Switch to sub‑bubbles (start them invisible)
+      // Switch to sub‑bubbles (start them invisible).
       setShowSubBubbles(true);
       setFade(true);
-      // Trigger fade‑in after a short delay
+      // Trigger fade‑in after a short delay.
       setTimeout(() => {
         setFade(false);
       }, 50);
     }, 300);
   };
 
-  const handleSubBubbleClick = () => {
-    // Fade out the sub‑bubbles
+  const closeSubBubbles = () => {
+    // Fade out the sub‑bubbles.
     setFade(true);
     setTimeout(() => {
-      // Switch back to the primary bubble (starting it invisible)
+      // Switch back to the primary bubble (starting it invisible).
       setShowSubBubbles(false);
       setFade(true);
-      // Trigger fade‑in after a short delay
+      // Trigger fade‑in after a short delay.
       setTimeout(() => {
         setFade(false);
       }, 50);
     }, 300);
   };
 
-  // Returns position styles for the sub-bubbles arranged in a circle.
-  const getBubblePosition = (index) => {
-    // Define angles for each bubble (in degrees)
-    // Starting with the top (-90°), then 30° and 150° for a circle of three items.
-    const angles = [-90, 30, 150];
-    const angleInRadians = (angles[index] * Math.PI) / 180;
+  // Listen for clicks on the document.
+  const handleDocumentClick = (event) => {
+    if (
+      subBubblesRef.current &&
+      !subBubblesRef.current.contains(event.target)
+    ) {
+      closeSubBubbles();
+    }
+  };
+
+  useEffect(() => {
+    if (showSubBubbles) {
+      document.addEventListener("click", handleDocumentClick);
+    } else {
+      document.removeEventListener("click", handleDocumentClick);
+    }
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, [showSubBubbles]);
+
+  // Returns position styles for sub-bubbles arranged evenly in a circle.
+  const getBubblePosition = (index, total) => {
+    const angle = (360 / total) * index - 90; // start at top
+    const angleInRadians = (angle * Math.PI) / 180;
     const radius = 80; // Radius of the circle in pixels
     return {
       position: "absolute",
@@ -70,6 +90,7 @@ export const Bubble = ({ primaryContent, bubble1, bubble2, bubble3 }) => {
       )}
       {showSubBubbles && (
         <div
+          ref={subBubblesRef}
           style={{
             position: "relative",
             width: "200px",
@@ -77,24 +98,17 @@ export const Bubble = ({ primaryContent, bubble1, bubble2, bubble3 }) => {
             margin: "0 auto",
           }}
         >
-          <div
-            style={{ ...bubbleStyle, ...getBubblePosition(0) }}
-            // onClick={handleSubBubbleClick}
-          >
-            {bubble1}
-          </div>
-          <div
-            style={{ ...bubbleStyle, ...getBubblePosition(1) }}
-            // onClick={handleSubBubbleClick}
-          >
-            {bubble2}
-          </div>
-          <div
-            style={{ ...bubbleStyle, ...getBubblePosition(2) }}
-            // onClick={handleSubBubbleClick}
-          >
-            {bubble3}
-          </div>
+          {bubbles.map((bubbleContent, index) => (
+            <div
+              key={index}
+              style={{
+                ...bubbleStyle,
+                ...getBubblePosition(index, bubbles.length),
+              }}
+            >
+              {bubbleContent}
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -28,16 +28,21 @@ function App() {
       >
         <Bubble
           primaryContent={"Some Central Theme"}
-          bubble1={
+          bubbles={[
             <Bubble
               primaryContent={"woah"}
+              bubbles={[
+                <Bubble primaryContent={"OOOOO"} bubbles={["definitely"]} />,
+                "-----",
+                "-----",
+              ]}
               bubble1={"are"}
               bubble2={"we"}
               bubble3={"meta"}
-            />
-          }
-          bubble2={"a related place"}
-          bubble3={"a related person"}
+            />,
+            "a related place",
+            "a related person",
+          ]}
         />
       </div>
     </div>
