@@ -17,7 +17,7 @@ export const Farm = () => {
       <div class="nav-container">
         <a onclick={() => showContent("about")}>About</a>
         <a onclick={() => showContent("manifesto")}>Manifesto</a>
-        <a onclick="showContent('contact')">Contact</a>
+        <a onclick={() => showContent("contact")}>Contact</a>
       </div>
 
       <div class="main-content">
@@ -26,7 +26,8 @@ export const Farm = () => {
           <div class="mind-map"></div>
         </div>
       </div>
-
+      {/* below is not working, please fix
+use usestate to conditinally render the below */}
       <div id="about" class="content">
         <h2>About</h2>
         <p>
