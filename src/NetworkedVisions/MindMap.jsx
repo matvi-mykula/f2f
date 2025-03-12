@@ -9,7 +9,7 @@ const ConceptNode = ({ concept, onClick, style, isCentral }) => {
     justifyContent: "center",
     backgroundColor: "#f0f0f0",
     border: "1px solid #ccc",
-    borderRadius: "50%", // circle by default
+    borderRadius: "50%", // default shape (circle)
     padding: isCentral ? "20px" : "10px",
     width: isCentral ? "150px" : "120px",
     height: isCentral ? "150px" : "120px",
@@ -24,33 +24,39 @@ const ConceptNode = ({ concept, onClick, style, isCentral }) => {
     <div style={nodeStyle} onClick={onClick}>
       <strong>{concept.name}</strong>
       <p style={{ margin: "5px 0 0 0", fontSize: "0.9rem" }}>
-        {concept.summary}
+        {concept?.summary}
+        {isCentral && concept?.content}
       </p>
     </div>
   );
 };
 
-// The Mindmap component manages the current focus and cycles through the data.
-const Mindmap = ({ data, initialFocus }) => {
-  // Set initial focus to the provided key or the first key in data.
-  const [currentFocus, setCurrentFocus] = useState(
-    initialFocus || Object.keys(data)[0]
-  );
-  // "visible" state controls the fade transitions.
+// MindmapWithHistory renders the current (central) node,
+// its peripheral nodes (from its tags), and the previous node.
+const MindmapWithHistory = ({ data, initialFocus }) => {
+  // History state stores the focused concept keys.
+  const [historyState, setHistoryState] = useState([initialFocus]);
   const [visible, setVisible] = useState(false);
 
+  // The current focus is the last item in the history.
+  const currentFocus = historyState[historyState.length - 1];
   const focusedConcept = data[currentFocus];
-  // Peripheral keys come from the focused concept's tags.
+  // Peripheral nodes come from the focused concept's tags.
   const peripheralKeys = focusedConcept.tags || [];
 
-  // When the component mounts, trigger the fade in.
+  // Previous node (if exists) is the penultimate item.
+  const prevFocus =
+    historyState.length > 1 ? historyState[historyState.length - 2] : null;
+  const prevConcept = prevFocus ? data[prevFocus] : null;
+
+  // When the current focus changes (or on mount), trigger fade-in.
   useEffect(() => {
     setTimeout(() => {
       setVisible(true);
     }, 500);
-  }, []);
+  }, [currentFocus]);
 
-  // Container style with a fade transition.
+  // Container style.
   const containerStyle = {
     position: "relative",
     width: "90vh",
@@ -62,7 +68,7 @@ const Mindmap = ({ data, initialFocus }) => {
     transition: "opacity 0.5s ease-in-out",
   };
 
-  // Style for the central node (always centered).
+  // Central node style.
   const centralStyle = {
     position: "absolute",
     left: "50%",
@@ -75,21 +81,9 @@ const Mindmap = ({ data, initialFocus }) => {
     transition: "opacity 0.5s ease, transform 0.5s ease",
   };
 
-  // Function to handle focus change with a fade out then fade in.
-  const handleFocusChange = (key) => {
-    if (key === currentFocus) return;
-    // Fade out current central node (and peripheral nodes)
-    setVisible(false);
-    // After fade out, change focus and fade back in.
-    setTimeout(() => {
-      setCurrentFocus(key);
-      setVisible(true);
-    }, 500);
-  };
-
-  // Compute peripheral node positions arranged in a circle.
+  // Peripheral nodes arranged in a circle.
   const getPeripheralPosition = (index, total, radius = 200) => {
-    const angle = (360 / total) * index - 90; // start at top (−90°)
+    const angle = (360 / total) * index - 90; // start at top (-90°)
     const angleRad = (angle * Math.PI) / 180;
     const x = radius * Math.cos(angleRad);
     const y = radius * Math.sin(angleRad);
@@ -102,16 +96,58 @@ const Mindmap = ({ data, initialFocus }) => {
     };
   };
 
+  // Style for the previous node (displayed to the left of center).
+  const previousStyle = {
+    position: "absolute",
+    left: "50%",
+    top: "20%",
+    transform: visible
+      ? "translate(-50%, -50%) scale(0.8)"
+      : "translate(-50%, -50%) scale(0.7)",
+    zIndex: 1,
+    opacity: visible ? 1 : 0,
+    transition: "opacity 0.5s ease, transform 0.5s ease",
+  };
+
+  // Handle focus change: fade out, update history, then fade in.
+  const handleFocusChange = (key) => {
+    if (key === currentFocus) return;
+    setVisible(false);
+    setTimeout(() => {
+      setHistoryState([...historyState, key]);
+      setVisible(true);
+    }, 500);
+  };
+
+  // "Back" button handler (if desired).
+  const handleBack = () => {
+    if (historyState.length <= 1) return;
+    setVisible(false);
+    setTimeout(() => {
+      setHistoryState(historyState.slice(0, historyState.length - 1));
+      setVisible(true);
+    }, 500);
+  };
+
   return (
     <div style={containerStyle}>
+      {/* Previous Node (if exists) */}
+      {prevConcept && (
+        <ConceptNode
+          key={prevFocus}
+          concept={prevConcept}
+          onClick={handleBack}
+          style={{ ...previousStyle, backgroundColor: "lightpink" }}
+        />
+      )}
       {/* Central Node */}
       <ConceptNode
+        key={currentFocus}
         concept={focusedConcept}
         isCentral={true}
         style={centralStyle}
       />
-
-      {/* Peripheral Nodes */}
+      {/* Peripheral Nodes from current focus's tags */}
       {peripheralKeys.map((key, index) => {
         const concept = data[key];
         if (!concept) return null;
@@ -128,4 +164,4 @@ const Mindmap = ({ data, initialFocus }) => {
   );
 };
 
-export default Mindmap;
+export default MindmapWithHistory;

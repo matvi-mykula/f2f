@@ -7,6 +7,7 @@ export const data = {
     summary: "get in the dirt and reach for the sky",
     blurb: "other stuff here",
     tags: ["localPolitics", "movement", "craft"],
+    pageUrl: "/farming",
   },
   localPolitics: {
     name: "Local Politics",
@@ -47,6 +48,7 @@ export const data = {
   lamps: {
     name: "lamps",
     summary: "lighting for work or mood",
+    content: "something longer here",
     tags: ["craft"],
   },
   architecture: {

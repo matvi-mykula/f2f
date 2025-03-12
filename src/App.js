@@ -6,7 +6,7 @@ import { Farm } from "./farm";
 import "./App.css";
 import Vision from "./WebOfVisions";
 import Coconspirators from "./Coconspirators";
-import Mindmap from "./NetworkedVisions/MindMap";
+import { MindMapPage } from "./NetworkedVisions/MindMapPage";
 import { data } from "./NetworkedVisions/data";
 
 const navLinkStyle = {
@@ -71,10 +71,7 @@ function App() {
         <Route path="/farmToForm" element={<Farm />} />
         <Route path="/vision" element={<Vision />} />
         <Route path="/Coconspirators" element={<Coconspirators />} />
-        <Route
-          path="/visionMap"
-          element={<Mindmap data={data} initialFocus="farming" />}
-        />
+        <Route path="/visionMap" element={<MindMapPage />} />
       </Routes>
     </BrowserRouter>
   );
