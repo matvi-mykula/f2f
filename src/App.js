@@ -38,15 +38,25 @@ function App() {
             justifyContent: "center",
           }}
         >
-          <Link to="/about" style={navLinkStyle}>
-            About
+          <Link
+            to="/"
+            style={{
+              position: "absolute",
+              left: "2rem",
+              textDecoration: "none",
+              fontWeight: "bold",
+              fontSize: "18px",
+              color: "black",
+            }}
+          >
+            🏠
           </Link>
-          <Link to="/" style={navLinkStyle}>
+          {/* <Link to="/" style={navLinkStyle}>
             Bubble
           </Link>
           <Link to="/farmToForm" style={navLinkStyle}>
             Farm
-          </Link>
+          </Link> */}
           <Link to="/vision" style={navLinkStyle}>
             Vision
           </Link>

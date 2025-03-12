@@ -1,66 +1,36 @@
 import React from "react";
 
 const Vision = () => {
-  // Page container styles
-  const pageStyle = {
-    backgroundColor: "#add8e6", // Light blue ocean background
-    height: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    position: "relative",
-    textAlign: "center",
-    fontFamily: "Arial, sans-serif",
-  };
-
-  // Goal list styles
-  const listStyle = {
-    background: "white",
-    padding: "20px",
-    borderRadius: "10px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-    textAlign: "left",
-  };
-
-  // Fun undersea character styles
-  const characterStyle = {
-    position: "absolute",
-    width: "100px",
-  };
-
-  const characters = [
-    { src: "/fish.png", top: "10%", left: "5%" },
-    { src: "/turtle.png", top: "70%", left: "80%" },
-    { src: "/jellyfish.png", top: "50%", left: "20%" },
-    { src: "/octopus.png", top: "80%", left: "5%" },
-    { src: "/seahorse.png", top: "15%", left: "85%" },
-  ];
-
   return (
-    <div style={pageStyle}>
-      <h1>Vision for the Website</h1>
-      <div style={listStyle}>
-        <h2>Goals</h2>
-        <ul>
-          <li>Mapping & Connecting Material Flows</li>
-          <li>Information Flows</li>
-          <li>Governance</li>
-          <li>Ideation</li>
-          <li>Collaboration</li>
-          <li>Envisioning</li>
-        </ul>
-      </div>
-      {/* Render undersea characters */}
-      {characters.map((char, index) => (
-        <img
-          key={index}
-          src={char.src}
-          alt="Undersea character"
-          style={{ ...characterStyle, top: char.top, left: char.left }}
-        />
-      ))}
+    <div
+      style={{
+        maxWidth: "800px",
+        margin: "0 auto",
+        padding: "2rem",
+        fontFamily: "'Helvetica Neue', sans-serif",
+        lineHeight: "1.6",
+      }}
+    >
+      <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Our Vision</h1>
+      <p style={{ fontSize: "1.1rem", marginBottom: "2rem" }}>
+        We believe in a future shaped by{" "}
+        <strong>collaborative proactive symbiosis</strong> — a dynamic ecosystem
+        where people, systems, and ideas evolve together with intention. This
+        approach isn’t just about working together; it’s about anticipating
+        needs, nurturing mutual growth, and creating solutions that benefit all
+        participants in the system. In this vision, cooperation becomes the
+        foundation for resilience, innovation, and sustainable progress.
+      </p>
+      <img
+        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" // feel free to swap this image!
+        alt="Collaborative ecosystem"
+        style={{
+          width: "100%",
+          height: "auto",
+          borderRadius: "12px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        }}
+      />
     </div>
   );
 };
