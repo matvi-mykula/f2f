@@ -1,5 +1,6 @@
 import React from "react";
 import { Bubble } from "./ExpandingBubble";
+import { CircleToSquare } from "./CircleToSquare";
 
 const BubblePage = () => {
   return (
@@ -31,6 +32,10 @@ const BubblePage = () => {
           />,
           "a related place",
           "a related person",
+          <CircleToSquare
+            summary={"something small"}
+            details={"SOMETHING BIG AND DENSE "}
+          />,
         ]}
       />
     </div>

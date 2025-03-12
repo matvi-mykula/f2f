@@ -66,11 +66,13 @@ export const Bubble = ({ primaryContent, bubbles = [] }) => {
     };
   }, [showSubBubbles]);
 
-  // Returns position styles for sub-bubbles arranged evenly in a circle.
   const getBubblePosition = (index, total) => {
     const angle = (360 / total) * index - 90; // start at top
     const angleInRadians = (angle * Math.PI) / 180;
-    const radius = 80; // Radius of the circle in pixels
+    const baseRadius = 80; // Minimum distance from the center
+    const extraPerBubble = 20; // Additional distance per bubble
+    const radius = baseRadius + extraPerBubble * total; // Increase radius with the total number of bubbles
+
     return {
       position: "absolute",
       left: "50%",
