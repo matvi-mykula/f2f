@@ -1,7 +1,7 @@
 // here we are going to put ideas, concepts, places, structures, people , practices, etc
 // in a stuctured format
 
-const data = {
+export const data = {
   farming: {
     name: "Farming",
     summary: "get in the dirt and reach for the sky",

@@ -6,6 +6,9 @@ import { Farm } from "./farm";
 import "./App.css";
 import Vision from "./WebOfVisions";
 import Coconspirators from "./Coconspirators";
+import Mindmap from "./NetworkedVisions/MindMap";
+import { data } from "./NetworkedVisions/data";
+
 const navLinkStyle = {
   textDecoration: "none", // Removes underline
   color: "blue", // Text color
@@ -58,6 +61,10 @@ function App() {
         <Route path="/farmToForm" element={<Farm />} />
         <Route path="/vision" element={<Vision />} />
         <Route path="/Coconspirators" element={<Coconspirators />} />
+        <Route
+          path="/visionMap"
+          element={<Mindmap data={data} initialFocus="farming" />}
+        />
       </Routes>
     </BrowserRouter>
   );
