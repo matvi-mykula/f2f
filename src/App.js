@@ -10,6 +10,16 @@ import { MindMapPage } from "./NetworkedVisions/MindMapPage";
 import ProjectCard from "./AboutThisPage";
 import { data } from "./NetworkedVisions/data";
 
+// todo:
+// add more content to data structure
+// think about shape of data structure
+// massage bubbles to present well
+// make fallback page link dynamic
+// make form for content submission
+// ensure pages look good on mobile
+//
+//
+
 const navLinkStyle = {
   textDecoration: "none", // Removes underline
   color: "blue", // Text color
