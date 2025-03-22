@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { BaseDataItem, DataMap } from "./data";
+
+interface ConceptNodeProps {
+  concept: BaseDataItem;
+  onClick?: () => void; // Mark as optional
+  style?: React.CSSProperties;
+  isCentral?: boolean;
+}
 
 // A presentational component for each concept node.
-const ConceptNode = ({ concept, onClick, style, isCentral }) => {
-  const nodeStyle = {
+const ConceptNode = ({
+  concept,
+  onClick = undefined,
+  style,
+  isCentral,
+}: ConceptNodeProps) => {
+  const nodeStyle: React.CSSProperties = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -23,6 +36,36 @@ const ConceptNode = ({ concept, onClick, style, isCentral }) => {
   return (
     <div style={nodeStyle} onClick={onClick}>
       <strong>{concept.name}</strong>
+      {concept?.pageUrl && (
+        <a
+          href={concept.pageUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            marginLeft: 8,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 28,
+            height: 28,
+            borderRadius: "50%",
+            backgroundColor: "#007ACC",
+            color: "#fff",
+            textDecoration: "none",
+          }}
+          title="Visit page"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path d="M6.354 5.5H5a.5.5 0 0 0 0 1h3.793L4.146 11.146a.5.5 0 1 0 .708.708L9.5 7.207V11a.5.5 0 0 0 1 0V5.5a.5.5 0 0 0-.5-.5H6.354z" />
+          </svg>
+        </a>
+      )}
       <p style={{ margin: "5px 0 0 0", fontSize: "0.9rem" }}>
         {concept?.summary}
         {isCentral && concept?.content}
@@ -33,7 +76,13 @@ const ConceptNode = ({ concept, onClick, style, isCentral }) => {
 
 // MindmapWithHistory renders the current (central) node,
 // its peripheral nodes (from its tags), and the previous node.
-const MindmapWithHistory = ({ data, initialFocus }) => {
+const MindmapWithHistory = ({
+  data,
+  initialFocus,
+}: {
+  data: DataMap;
+  initialFocus: string;
+}) => {
   // History state stores the focused concept keys.
   const [historyState, setHistoryState] = useState([initialFocus]);
   const [visible, setVisible] = useState(false);
@@ -57,7 +106,7 @@ const MindmapWithHistory = ({ data, initialFocus }) => {
   }, [currentFocus]);
 
   // Container style.
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: "relative",
     width: "90vh",
     height: "90vh",
@@ -69,7 +118,7 @@ const MindmapWithHistory = ({ data, initialFocus }) => {
   };
 
   // Central node style.
-  const centralStyle = {
+  const centralStyle: React.CSSProperties = {
     position: "absolute",
     left: "50%",
     top: "50%",
@@ -82,7 +131,11 @@ const MindmapWithHistory = ({ data, initialFocus }) => {
   };
 
   // Peripheral nodes arranged in a circle.
-  const getPeripheralPosition = (index, total, radius = 200) => {
+  const getPeripheralPosition = (
+    index: number,
+    total: number,
+    radius = 200
+  ): React.CSSProperties => {
     const angle = (360 / total) * index - 90; // start at top (-90°)
     const angleRad = (angle * Math.PI) / 180;
     const x = radius * Math.cos(angleRad);
@@ -97,7 +150,7 @@ const MindmapWithHistory = ({ data, initialFocus }) => {
   };
 
   // Style for the previous node (displayed to the left of center).
-  const previousStyle = {
+  const previousStyle: React.CSSProperties = {
     position: "absolute",
     left: "50%",
     top: "20%",
@@ -110,7 +163,7 @@ const MindmapWithHistory = ({ data, initialFocus }) => {
   };
 
   // Handle focus change: fade out, update history, then fade in.
-  const handleFocusChange = (key) => {
+  const handleFocusChange = (key: string) => {
     if (key === currentFocus) return;
     setVisible(false);
     setTimeout(() => {

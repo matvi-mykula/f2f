@@ -1,4 +1,4 @@
-interface BaseDataItem {
+export interface BaseDataItem {
   name: string;
   summary: string;
   blurb?: string;
@@ -8,9 +8,14 @@ interface BaseDataItem {
     locations?: string[];
     [key: string]: any;
   };
+  tags: string[];
+  links?: string[];
+}
+export interface DataMap {
+  [key: string]: BaseDataItem & { tags: string[] };
 }
 
-// This helper expects each item to have a `tags` array whose entries are keys of the whole object.
+// we are going to use some tricky typescript stuff so that tags autocomplete with data item keys
 function defineData<
   T extends Record<
     string,
@@ -37,6 +42,12 @@ export const data = defineData({
     name: "Movement",
     summary: "wiggle wiggle wiggle",
     tags: ["swimming", "farming"],
+  },
+  toil: {
+    name: "Manual Labor",
+    summary:
+      "Physical labor connects the mind to the matter of that around us.",
+    tags: ["farming", "movement"],
   },
   swimming: {
     name: "Swimming",
@@ -90,7 +101,7 @@ export const data = defineData({
   technology: {
     name: "technology",
     summary: "tooling",
-    tags: ["architecture", "friendsToForm"],
+    tags: ["architecture", "friendsToForm", "metalworking", "craft"],
   },
   farmtoform: {
     name: "farm to form",
@@ -101,5 +112,10 @@ export const data = defineData({
     name: "Friends to Form",
     summary: "Web application network project providing alternatives.",
     tags: ["technology", "localPolitics"],
+    blurb:
+      "Friends to Form is a React-powered mindmap and networking app designed to be an alternative to traditional power structures. By mapping ideas and connections in an intuitive, decentralized interface, it empowers communities to build collaborative alternatives to hegemonic systems.",
+    pageUrl: "/aboutThisSite",
+    // not sure if we want this to be in otherInfo or as its own property...
+    links: ["https://github.com/matvi-mykula/f2f"],
   },
 });

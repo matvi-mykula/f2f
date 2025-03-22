@@ -7,6 +7,8 @@ import "./App.css";
 import Vision from "./WebOfVisions";
 import Coconspirators from "./Coconspirators";
 import { MindMapPage } from "./NetworkedVisions/MindMapPage";
+import ProjectCard from "./AboutThisPage";
+import { data } from "./NetworkedVisions/data";
 
 const navLinkStyle = {
   textDecoration: "none", // Removes underline
@@ -62,6 +64,9 @@ function App() {
           <Link to="/Coconspirators" style={navLinkStyle}>
             Coconspirators
           </Link>
+          <Link to="/visionMap" style={navLinkStyle}>
+            MindMapNetwork
+          </Link>
         </nav>
       </header>
       <Routes>
@@ -71,6 +76,10 @@ function App() {
         <Route path="/vision" element={<Vision />} />
         <Route path="/Coconspirators" element={<Coconspirators />} />
         <Route path="/visionMap" element={<MindMapPage />} />
+        <Route
+          path="/aboutThisSite"
+          element={<ProjectCard project={data["friendsToForm"]} />}
+        />
       </Routes>
     </BrowserRouter>
   );
