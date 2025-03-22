@@ -1,7 +1,26 @@
-// here we are going to put ideas, concepts, places, structures, people , practices, etc
-// in a stuctured format
+interface BaseDataItem {
+  name: string;
+  summary: string;
+  blurb?: string;
+  pageUrl?: string;
+  content?: string;
+  otherInfo?: {
+    locations?: string[];
+    [key: string]: any;
+  };
+}
 
-export const data = {
+// This helper expects each item to have a `tags` array whose entries are keys of the whole object.
+function defineData<
+  T extends Record<
+    string,
+    Omit<BaseDataItem, "tags"> & { tags: Array<keyof T> }
+  >
+>(data: T): T {
+  return data;
+}
+
+export const data = defineData({
   farming: {
     name: "Farming",
     summary: "get in the dirt and reach for the sky",
@@ -12,7 +31,7 @@ export const data = {
   localPolitics: {
     name: "Local Politics",
     summary: "Mayor Wu is a boss",
-    tags: ["localPolitics", "culture"],
+    tags: ["farming", "culture", "friendsToForm"],
   },
   movement: {
     name: "Movement",
@@ -33,7 +52,14 @@ export const data = {
   craft: {
     name: "craft",
     summary: "creative making practices",
-    tags: ["craft"],
+    tags: [
+      "metalworking",
+      "farming",
+      "movement",
+      "lamps",
+      "architecture",
+      "culture",
+    ],
   },
   metalworking: {
     name: "metalworking",
@@ -43,7 +69,7 @@ export const data = {
   nature: {
     name: "nature",
     summary: "the mother",
-    tags: ["farming", "biology", "the sun"],
+    tags: ["farming", "movement"],
   },
   lamps: {
     name: "lamps",
@@ -64,11 +90,16 @@ export const data = {
   technology: {
     name: "technology",
     summary: "tooling",
-    tags: ["architecture"],
+    tags: ["architecture", "friendsToForm"],
   },
   farmtoform: {
     name: "farm to form",
     summary: "an intiative",
-    tags: ["nature", "culture", "technology"],
+    tags: ["nature", "culture", "technology", "friendsToForm"],
   },
-};
+  friendsToForm: {
+    name: "Friends to Form",
+    summary: "Web application network project providing alternatives.",
+    tags: ["technology", "localPolitics"],
+  },
+});

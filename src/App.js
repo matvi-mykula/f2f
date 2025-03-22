@@ -7,7 +7,6 @@ import "./App.css";
 import Vision from "./WebOfVisions";
 import Coconspirators from "./Coconspirators";
 import { MindMapPage } from "./NetworkedVisions/MindMapPage";
-import { data } from "./NetworkedVisions/data";
 
 const navLinkStyle = {
   textDecoration: "none", // Removes underline
